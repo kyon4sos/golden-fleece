@@ -6,19 +6,24 @@ const routes = [
         hideInMenu: true,
     },
     {
-        path: "/admin",
-        name: 'admin',
+        path: "/crm",
+        name: 'crm',
         component: 'admin',
         routes: [
             {
-                path: "test1",
-                name: 'test1',
-                component: 'test',
+                path: "dashboard",
+                name: 'dashboard',
+                component: 'crm/dashboard',
             },
             {
-                path: "test2",
-                name: 'test2',
-                component: 'test2',
+                path: "task",
+                name: 'task',
+                component: 'crm/task',
+            },
+            {
+                path: "statistics",
+                name: 'statistics',
+                component: 'crm/statistics',
             }
         ]
     }

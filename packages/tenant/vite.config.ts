@@ -1,4 +1,6 @@
 import { defineConfig } from 'vite'
+import OptimizationPersist from 'vite-plugin-optimize-persist'
+import PkgConfig from 'vite-plugin-package-config'
 import react from '@vitejs/plugin-react'
 import vitePluginImp from 'vite-plugin-imp'
 import * as path from 'path'
@@ -8,6 +10,8 @@ import * as path from 'path'
 export default defineConfig({
   plugins: [
     react(),
+    PkgConfig(),
+    OptimizationPersist(),
     vitePluginImp({
       libList: [
         {

@@ -97,18 +97,7 @@ const DefaultLayout = () => {
         </div>}
         {...settings}
       >
-        <PageContainer
-          tabList={[
-            {
-              tab: '基本信息',
-              key: 'base',
-            },
-            {
-              tab: '详细信息',
-              key: 'info',
-            },
-          ]}
-        >
+        <PageContainer>
           <div
             style={{
               height: '100vh',

@@ -11,18 +11,14 @@ import { GlobalContext } from './utils/context'
 //   children?: RouteItem[]
 // }
 const generateRoute = (routes: any[]) => {
-  debugger
   console.log(import.meta.env.BASE_URL);
   const pages = import.meta.glob("./pages/**/[a-z]*.tsx");
   const layouts = import.meta.glob("./layouts/**/[a-z]*.tsx");
   console.log(pages, layouts);
-
   const arr: any[] = [];
   function _transform(routes: any[], path: string = "", layout: string = "") {
-    debugger
     routes.forEach(route => {
       route._path = path + '/' + route.path
-      // debugger
       if (layout) {
         route._layout = layouts[`./layouts/${layout}/index.tsx`];
       }
@@ -81,7 +77,7 @@ function App() {
               : <Route key={idx} path={route._path} component={lazyLoad(route._component)}></Route>
           })
         } */}
-        <Route path="/admin" component={DefaultLayout}></Route>
+        <Route path="/" component={DefaultLayout}></Route>
         <Route path="/403" component={lazyLoad(() => import('./pages/exception/403'))}></Route>
         <Route path="/*" component={lazyLoad(() => import('./pages/exception/404'))}></Route>
       </Switch>
