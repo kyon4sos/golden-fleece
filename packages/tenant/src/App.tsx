@@ -1,11 +1,11 @@
-import { useMemo } from 'react';
-import { Route, Switch } from 'react-router-dom'
-import DefaultLayout from './layouts/admin';
-import routes from './routes';
-import { lazyLoad } from './utils'
+import { useMemo } from "react";
+import { Route, Routes } from "react-router-dom";
+import BlankLayout from "./layouts/blank";
+import Scene from "./pages/scene";
+import routes from "./routes";
+import { GlobalContext } from "./utils/context";
 
-import { GlobalContext } from './utils/context'
-
+import "./App.less";
 // type RouteItem = Omit<RouteObject, 'element' | 'children'> & {
 //   element: string
 //   children?: RouteItem[]
@@ -17,8 +17,8 @@ const generateRoute = (routes: any[]) => {
   console.log(pages, layouts);
   const arr: any[] = [];
   function _transform(routes: any[], path: string = "", layout: string = "") {
-    routes.forEach(route => {
-      route._path = path + '/' + route.path
+    routes.forEach((route) => {
+      route._path = path + "/" + route.path;
       if (layout) {
         route._layout = layouts[`./layouts/${layout}/index.tsx`];
       }
@@ -29,11 +29,11 @@ const generateRoute = (routes: any[]) => {
         const _component = pages[`./pages/${route.component}/index.tsx`];
         arr.push({ ...route, _component });
       }
-    })
+    });
   }
-  _transform(routes)
-  return arr
-}
+  _transform(routes);
+  return arr;
+};
 
 // const defaultMenus = [
 //   {
@@ -63,13 +63,15 @@ const generateRoute = (routes: any[]) => {
 //   },
 // ];
 
-
 function App() {
-  const flattenRoutes = useMemo(() => generateRoute(routes), [routes])
+  const flattenRoutes = useMemo(() => generateRoute(routes), [routes]);
   console.log(flattenRoutes);
   return (
     <GlobalContext.Provider value={{ routes: flattenRoutes }}>
-      <Switch>
+      <Routes>
+        <Route path="/" element={<BlankLayout />}>
+          <Route path="scene" element={<Scene />} />
+        </Route>
         {/* {
           flattenRoutes.map((route, idx) => {
             console.log(route);
@@ -77,13 +79,12 @@ function App() {
               : <Route key={idx} path={route._path} component={lazyLoad(route._component)}></Route>
           })
         } */}
-        <Route path="/" component={DefaultLayout}></Route>
+        {/* <Route path="/" component={DefaultLayout}></Route>
         <Route path="/403" component={lazyLoad(() => import('./pages/exception/403'))}></Route>
-        <Route path="/*" component={lazyLoad(() => import('./pages/exception/404'))}></Route>
-      </Switch>
-    </GlobalContext.Provider >
-  )
+        <Route path="/*" element={lazyLoad(() => import('./pages/exception/404'))}></Route> */}
+      </Routes>
+    </GlobalContext.Provider>
+  );
 }
 
-
-export default App
+export default App;
