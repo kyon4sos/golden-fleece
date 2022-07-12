@@ -5,6 +5,7 @@ importers:
   .:
     specifiers:
       '@ant-design/icons': ^4.7.0
+      '@icon-park/react': ^1.4.2
       '@loadable/component': ^5.15.2
       '@react-three/drei': ^9.13.2
       '@react-three/fiber': ^8.0.26
@@ -31,6 +32,7 @@ importers:
       vite-plugin-imp: ^2.2.0
     dependencies:
       '@ant-design/icons': 4.7.0_biqbaboplfbrettd7655fr4n2y
+      '@icon-park/react': 1.4.2_biqbaboplfbrettd7655fr4n2y
       '@loadable/component': 5.15.2_react@18.2.0
       '@react-three/drei': 9.13.2_oljxl432in6q5qxjmnckewj7rq
       '@react-three/fiber': 8.0.27_jvurxncug65yh22s5p4pqgaif4
@@ -715,6 +717,17 @@ packages:
   /@ctrl/tinycolor/3.4.1:
     resolution: {integrity: sha512-ej5oVy6lykXsvieQtqZxCOaLT+xD4+QNarq78cIYISHmZXshCvROLudpQN3lfL8G0NL7plMSSK+zlyvCaIJ4Iw==}
     engines: {node: '>=10'}
+    dev: false
+
+  /@icon-park/react/1.4.2_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-+MtQLjNiRuia3fC/NfpSCTIy5KH5b+NkMB9zYd7p3R4aAIK61AjK0OSraaICJdkKooU9jpzk8m0fY4g9A3JqhQ==}
+    engines: {node: '>= 8.0.0', npm: '>= 5.0.0'}
+    peerDependencies:
+      react: '>=16.9'
+      react-dom: '>=16.9'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@jridgewell/gen-mapping/0.1.1:

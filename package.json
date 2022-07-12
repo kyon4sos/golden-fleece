@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@icon-park/react": "^1.4.2",
     "@loadable/component": "^5.15.2",
     "@react-three/drei": "^9.13.2",
     "@react-three/fiber": "^8.0.26",

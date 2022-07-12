@@ -1,15 +1,18 @@
 import { useMemo } from "react";
 import { Route, Routes } from "react-router-dom";
+import {IconProvider, DEFAULT_ICON_CONFIGS} from '@icon-park/react'
 import BlankLayout from "./layouts/blank";
 import Scene from "./pages/scene";
 import routes from "./routes";
 import { GlobalContext } from "./utils/context";
-
+import '@icon-park/react/styles/index.css';
 import "./App.less";
 // type RouteItem = Omit<RouteObject, 'element' | 'children'> & {
 //   element: string
 //   children?: RouteItem[]
 // }
+const IconConfig = {...DEFAULT_ICON_CONFIGS, prefix: 'bd'}
+
 const generateRoute = (routes: any[]) => {
   console.log(import.meta.env.BASE_URL);
   const pages = import.meta.glob("./pages/**/[a-z]*.tsx");
@@ -68,10 +71,11 @@ function App() {
   console.log(flattenRoutes);
   return (
     <GlobalContext.Provider value={{ routes: flattenRoutes }}>
-      <Routes>
-        <Route path="/" element={<BlankLayout />}>
-          <Route path="scene" element={<Scene />} />
-        </Route>
+       <IconProvider value={IconConfig}>
+         <Routes>
+          <Route path="/" element={<BlankLayout />}>
+            <Route path="scene" element={<Scene />} />
+          </Route>
         {/* {
           flattenRoutes.map((route, idx) => {
             console.log(route);
@@ -82,7 +86,8 @@ function App() {
         {/* <Route path="/" component={DefaultLayout}></Route>
         <Route path="/403" component={lazyLoad(() => import('./pages/exception/403'))}></Route>
         <Route path="/*" element={lazyLoad(() => import('./pages/exception/404'))}></Route> */}
-      </Routes>
+        </Routes>
+        </IconProvider>
     </GlobalContext.Provider>
   );
 }
