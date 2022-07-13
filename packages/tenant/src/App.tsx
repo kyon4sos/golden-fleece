@@ -5,7 +5,7 @@ import BlankLayout from "./layouts/blank";
 import Scene from "./pages/scene";
 import routes from "./routes";
 import { GlobalContext } from "./utils/context";
-import '@icon-park/react/styles/index.css';
+// import '@icon-park/react/styles/index.css';
 import "./App.less";
 // type RouteItem = Omit<RouteObject, 'element' | 'children'> & {
 //   element: string
@@ -67,10 +67,10 @@ const generateRoute = (routes: any[]) => {
 // ];
 
 function App() {
-  const flattenRoutes = useMemo(() => generateRoute(routes), [routes]);
-  console.log(flattenRoutes);
+  // const flattenRoutes = useMemo(() => generateRoute(routes), [routes]);
+  // console.log(flattenRoutes);
   return (
-    <GlobalContext.Provider value={{ routes: flattenRoutes }}>
+    <GlobalContext.Provider value={{}}>
        <IconProvider value={IconConfig}>
          <Routes>
           <Route path="/" element={<BlankLayout />}>
