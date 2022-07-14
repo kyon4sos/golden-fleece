@@ -2,7 +2,7 @@ import { BrowserRouter } from "react-router-dom";
 import { createRoot } from 'react-dom/client';
 import { ConfigProvider } from "antd";
 import App from "./App";
-
+import './index.css'
 // import 'antd/lib/style/themes/default.less';
 // import "antd/dist/antd.variable.min.css";
 

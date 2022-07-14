@@ -7,7 +7,39 @@
   justify-content: space-between;
   padding: 8px 8px 6px 8px;
 }
+
 .property {
   display: flex;
   justify-content: space-between;
+  height: 100%;
+  width: 100%;
+
+  :global {
+    .ant-tabs {
+      width: 100%;
+    }
+
+    .ant-tabs>.ant-tabs-nav,
+    .ant-tabs>div>.ant-tabs-nav {
+      padding: 16px 0px;
+    }
+
+    .ant-tabs-left>.ant-tabs-content-holder>.ant-tabs-content>.ant-tabs-tabpane,
+    .ant-tabs-left>div>.ant-tabs-content-holder>.ant-tabs-content>.ant-tabs-tabpane {
+      padding-left: 8px;
+    }
+
+    .ant-tabs-content-holder {
+      padding: 8px;
+      background-color: var(--bgColor);
+      border-radius: 8px;
+      height: 100%;
+      width: 100%;
+      border: 1px solid #303030;
+    }
+  }
+}
+
+.treeWrap {
+  padding: 8px;
 }

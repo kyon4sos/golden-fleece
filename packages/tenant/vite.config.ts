@@ -3,6 +3,7 @@ import OptimizationPersist from 'vite-plugin-optimize-persist'
 import PkgConfig from 'vite-plugin-package-config'
 import react from '@vitejs/plugin-react'
 import vitePluginImp from 'vite-plugin-imp'
+import postcss from './postcss.config.js'
 import * as path from 'path'
 
 // https://vitejs.dev/config/
@@ -22,6 +23,7 @@ export default defineConfig({
     }),
   ],
   css: {
+    postcss,
     preprocessorOptions: {
       less: {
         javascriptEnabled: true
