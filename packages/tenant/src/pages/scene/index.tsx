@@ -1,6 +1,6 @@
 import { Suspense, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, ThreeEvent, useFrame } from "@react-three/fiber";
 import {
   Bounds,
   ContactShadows,
@@ -13,10 +13,11 @@ import {
 } from "@react-three/drei";
 import { Selection, EffectComposer, Outline, SSAO, SMAA, Scanline, Bloom } from "@react-three/postprocessing";
 import { AddFour, ArrowLeft, HamburgerButton, PlayOne, ShareOne, UploadOne, Anchor, Down } from "@icon-park/react";
-import { Select, Space, Tabs, Tree, Upload } from "antd";
+import { InputNumber, Select, Space, Tabs, Tree, Upload } from "antd";
 import type { DataNode } from "antd/es/tree";
 import { RcFile } from "antd/lib/upload/interface";
 import { useWindowSize } from "react-use";
+
 import Loader from "./components/Loader";
 import Model from "./components/Modal";
 import SideBar from "./components/SideBar";
@@ -28,7 +29,7 @@ import Text from "./components/Text";
 import Sparks from "./components/Sparks";
 import Particles from "./components/Particles";
 import Effects from "./components/Effects";
-import { Group, Mesh } from "three";
+import { Color, Group, Mesh, MeshStandardMaterial, Object3D } from "three";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -59,67 +60,67 @@ type TreeData = {
   uuid: string;
 };
 
-function Ellipse(props) {
-  const geometry = useMemo(() => {
-    const curve = new THREE.EllipseCurve(0, 0, 10, 3, 0, 2 * Math.PI, false, 0);
-    const points = curve.getPoints(50);
-    return new THREE.BufferGeometry().setFromPoints(points);
-  }, []);
-  return (
-    <line geometry={geometry} {...props}>
-      <meshBasicMaterial />
-    </line>
-  );
-}
-function ReactAtom(props) {
-  return (
-    <group {...props}>
-      <Ellipse />
-      <Ellipse rotation={[0, 0, Math.PI / 3]} />
-      <Ellipse rotation={[0, 0, -Math.PI / 3]} />
-      <mesh>
-        <sphereGeometry args={[0.5, 32, 32]} />
-        <meshBasicMaterial color="red" />
-      </mesh>
-    </group>
-  );
-}
-function Number({ hover }) {
-  const ref = useRef();
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.position.x = THREE.MathUtils.lerp(ref.current.position.x, state.mouse.x * 2, 0.1);
-      ref.current.rotation.x = THREE.MathUtils.lerp(ref.current.rotation.x, state.mouse.y / 2, 0.1);
-      ref.current.rotation.y = 0.8;
-    }
-  });
-  return (
-    <Suspense fallback={null}>
-      <group ref={ref}>
-        <Text
-          size={10}
-          onClick={(e) =>
-            window.open("https://github.com/react-spring/react-three-fiber/blob/master/whatsnew.md", "_blank")
-          }
-          onPointerOver={() => hover(true)}
-          onPointerOut={() => hover(false)}
-        >
-          4
-        </Text>
-        <ReactAtom position={[35, -20, 0]} scale={[1, 0.5, 1]} />
-      </group>
-    </Suspense>
-  );
-}
+// function Ellipse(props) {
+//   const geometry = useMemo(() => {
+//     const curve = new THREE.EllipseCurve(0, 0, 10, 3, 0, 2 * Math.PI, false, 0);
+//     const points = curve.getPoints(50);
+//     return new THREE.BufferGeometry().setFromPoints(points);
+//   }, []);
+//   return (
+//     <line geometry={geometry} {...props}>
+//       <meshBasicMaterial />
+//     </line>
+//   );
+// }
+// function ReactAtom(props) {
+//   return (
+//     <group {...props}>
+//       <Ellipse />
+//       <Ellipse rotation={[0, 0, Math.PI / 3]} />
+//       <Ellipse rotation={[0, 0, -Math.PI / 3]} />
+//       <mesh>
+//         <sphereGeometry args={[0.5, 32, 32]} />
+//         <meshBasicMaterial color="red" />
+//       </mesh>
+//     </group>
+//   );
+// }
+// function Number({ hover }) {
+//   const ref = useRef();
+//   useFrame((state) => {
+//     if (ref.current) {
+//       ref.current.position.x = THREE.MathUtils.lerp(ref.current.position.x, state.mouse.x * 2, 0.1);
+//       ref.current.rotation.x = THREE.MathUtils.lerp(ref.current.rotation.x, state.mouse.y / 2, 0.1);
+//       ref.current.rotation.y = 0.8;
+//     }
+//   });
+//   return (
+//     <Suspense fallback={null}>
+//       <group ref={ref}>
+//         <Text
+//           size={10}
+//           onClick={(e) =>
+//             window.open("https://github.com/react-spring/react-three-fiber/blob/master/whatsnew.md", "_blank")
+//           }
+//           onPointerOver={() => hover(true)}
+//           onPointerOut={() => hover(false)}
+//         >
+//           4
+//         </Text>
+//         <ReactAtom position={[35, -20, 0]} scale={[1, 0.5, 1]} />
+//       </group>
+//     </Suspense>
+//   );
+// }
 const Scene = () => {
   const [hovered, hover] = useState(false);
-  const mouse = useRef([0, 0]);
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const [modelPath, setModelPath] = useState("");
+
   const [treeData, setTreeData] = useState<DataNode[]>([]);
-  // const [hovered, hover] = useState(null)
   const [env, setEnv] = useState("/potsdamer_platz_1k.hdr");
 
+  const mouse = useRef([0, 0]);
   const { width, height } = useWindowSize();
   const [selectConfig, setSelectConfig] = useState({
     shoe: { value: false },
@@ -131,6 +132,7 @@ const Scene = () => {
     shoe_6: { value: false },
     shoe_7: { value: false },
   });
+  const currentMesh = useRef<Object3D>()
   //  const config = useControls({
   //   all: { value: false },
   //   parts: folder(
@@ -152,7 +154,7 @@ const Scene = () => {
     const path = window.URL.createObjectURL(file);
     setModelPath(path);
   };
-  const onChangeTab = () => {};
+  const onChangeTab = () => { };
 
   const onChangeEnv = (value) => {
     console.log(value);
@@ -189,6 +191,30 @@ const Scene = () => {
       }));
     });
   };
+  const onClick = (e: ThreeEvent<MouseEvent>) => {
+    e.stopPropagation()
+    console.log(e.object);
+     currentMesh.current = e.object
+  }
+
+  const onEnvChange = (e) => {
+    console.log(e)
+  }
+  const onChange = (e) => {
+    console.log(e.material);
+    console.log(e.material.color);
+    console.log(currentMesh.current);
+    if (!currentMesh.current) {
+      return
+    }
+    const color = e.material.color
+    currentMesh.current.material.color = color;
+    // const orginMaterial = currentMesh.current.material
+    // currentMesh.current.material = {
+    //   ...orginMaterial,
+    //   material
+    // }
+  }
   return (
     <div className="scene">
       <ToolBar>
@@ -266,17 +292,28 @@ const Scene = () => {
             /> */}
           </EffectComposer>
           <Selection>
-            <Stage contactShadow shadows adjustCamera intensity={1} environment="studio" preset="soft">
-              {modelPath.length > 0 ? <Model path={modelPath} onLoad={onLoadModel} select={selectConfig} /> : <></>}
-            </Stage>
+            {/* <Stage contactShadow shadows adjustCamera intensity={1} environment="studio" preset="soft">
+              {modelPath.length > 0 ? <Model
+                path={modelPath}
+                onLoad={onLoadModel}
+                onClick={onClick}
+                select={selectConfig} /> : <></>}
+            </Stage> */}
 
             {/* <Bounds fit clip margin={1.2} damping={0}>
               {
                 modelPath.length > 0 ? <Model path={modelPath} onLoad={ onLoadModel } /> : <></>
               }
             </Bounds> */}
+            {modelPath.length > 0 ?
+              <Model
+                onClick={onClick}
+                path={modelPath}
+                onLoad={onLoadModel}
+                select={selectConfig} />
+              : <></>}
           </Selection>
-          {/* <Environment files={env} /> */}
+          <Environment files={env} />
           <ContactShadows position={[0, -0.8, 0]} opacity={0.25} scale={10} blur={1.5} far={0.8} />
         </Suspense>
         <GizmoHelper alignment="bottom-left" margin={[width / 2, 80]} renderPriority={2}>
@@ -296,9 +333,11 @@ const Scene = () => {
                   </Option>
                 ))}
               </Select>
+              <InputNumber onChange={onEnvChange} />
+
             </TabPane>
             <TabPane tab="材质" key="2">
-              <MaterialList />
+              <MaterialList onChange={onChange} />
             </TabPane>
             <TabPane tab="动画" key="3">
               Content of Tab Pane 2

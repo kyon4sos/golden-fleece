@@ -28,6 +28,7 @@ importers:
       postcss: ^7
       postcss-import: ^14.1.0
       react: ^18.0.0
+      react-colorful: ^5.5.1
       react-dom: ^18.0.0
       react-loadable: ^5.5.0
       react-use: ^17.4.0
@@ -55,6 +56,7 @@ importers:
       lamina: 1.0.6
       leva: 0.9.29_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
+      react-colorful: 5.5.1_biqbaboplfbrettd7655fr4n2y
       react-dom: 18.2.0_react@18.2.0
       react-loadable: 5.5.0_react@18.2.0
       react-use: 17.4.0_biqbaboplfbrettd7655fr4n2y
