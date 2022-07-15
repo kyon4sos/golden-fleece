@@ -15,27 +15,19 @@ type ModelProps = {
   select: select;
 };
 
-const material = () => (
-  <meshStandardMaterial
-    envMap={useCubeTexture(["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"], { path: "cube/" })}
-    roughness={0}
-    metalness={0.9}
-    color="#010101"
-  />
-);
 const Model = (props: ModelProps) => {
   const { path, onLoad, select, ...restProps } = props;
   const group = useRef<Group>(null);
   let gltf = useGLTF(path) as any;
-  const envMap = useCubeTexture(["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"], { path: "cube/" });
+  // const envMap = useCubeTexture(["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"], { path: "cube/" });
   useFrame(({ clock }) => {
     if (!group.current) {
       return;
     }
     // group.current.position.y > 50 ? group.current.position.y-- : group.current.position.y++;
     // = clock.getElapsedTime() + 2;
-    console.log(clock.getDelta());
-    console.log(clock.getElapsedTime());
+    // console.log(clock.getDelta());
+    // console.log(clock.getElapsedTime());
     group.current.rotateY(1 / (2 * 60));
   });
   // console.log(gltf)
@@ -52,14 +44,9 @@ const Model = (props: ModelProps) => {
       {gltf &&
         Object.keys(nodes).map((key) => (
           <Select key={key} name={key} enabled={select?.[key]?.value}>
-            <mesh
-              geometry={nodes[key].geometry}
-              material={
-                new MeshStandardMaterial({
-                  color: "#000",
-                })
-              }
-            />
+            <mesh geometry={nodes[key].geometry}>
+              <meshStandardMaterial  color="red" />
+            </mesh>
           </Select>
         ))}
     </group>

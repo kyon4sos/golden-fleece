@@ -8,6 +8,7 @@ import {
   GizmoHelper,
   GizmoViewport,
   OrbitControls,
+  Stage,
   Stats,
 } from "@react-three/drei";
 import { Selection, EffectComposer, Outline, SSAO, SMAA, Scanline, Bloom } from "@react-three/postprocessing";
@@ -265,18 +266,17 @@ const Scene = () => {
             /> */}
           </EffectComposer>
           <Selection>
-            {modelPath.length > 0 ? (
-              <Model path={modelPath} onLoad={onLoadModel} select={selectConfig} />
-            ) : (
-              <></>
-            )}
+            <Stage contactShadow shadows adjustCamera intensity={1} environment="studio" preset="soft">
+              {modelPath.length > 0 ? <Model path={modelPath} onLoad={onLoadModel} select={selectConfig} /> : <></>}
+            </Stage>
+
             {/* <Bounds fit clip margin={1.2} damping={0}>
               {
                 modelPath.length > 0 ? <Model path={modelPath} onLoad={ onLoadModel } /> : <></>
               }
             </Bounds> */}
           </Selection>
-          <Environment files={env} />
+          {/* <Environment files={env} /> */}
           <ContactShadows position={[0, -0.8, 0]} opacity={0.25} scale={10} blur={1.5} far={0.8} />
         </Suspense>
         <GizmoHelper alignment="bottom-left" margin={[width / 2, 80]} renderPriority={2}>
