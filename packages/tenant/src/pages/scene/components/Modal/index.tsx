@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { Select } from "@react-three/postprocessing";
 import { Group, Material, MeshStandardMaterial } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { ThreeEvent, useFrame, useLoader } from "@react-three/fiber";
+import { useFrame, useLoader } from "@react-three/fiber";
 
 type onLoad = (gltf: any) => void;
 type select = {
@@ -13,10 +13,6 @@ type ModelProps = {
   path: string;
   onLoad: onLoad;
   select: select;
-  onPointerOver?: () => void;
-  onPointerOut?: () => void;
-  onPointerMissed?: () => void;
-  onClick?: (e: ThreeEvent<MouseEvent>) => void;
 };
 
 const Model = (props: ModelProps) => {
@@ -41,30 +37,19 @@ const Model = (props: ModelProps) => {
       onLoad(gltf);
     }
   }, [path]);
-  const onPointerMove = (e: ThreeEvent<PointerEvent>) => {
-    // console.log(e);
-    // e.object
-  }
-  const { nodes, scene } = gltf;
-  return (
-    // <group ref={group}
-    //   dispose={null}
-    //   onPointerMove={onPointerMove}
-    //    {...restProps}
-    //   >
-    //   {gltf &&
-    //     Object.keys(nodes).map((key) => (
-    //       <Select key={key} name={key} enabled={select?.[key]?.value}>
-    //         <mesh geometry={nodes[key].geometry}>
-    //           <meshStandardMaterial  color="red" />
-    //         </mesh>
-    //       </Select>
-    //     ))}
-    // </group>
-    <Select>
-      <primitive object={scene} {...props} />
-    </Select>
 
+  const { nodes } = gltf;
+  return (
+    <group ref={group} {...restProps} dispose={null}>
+      {gltf &&
+        Object.keys(nodes).map((key) => (
+          <Select key={key} name={key} enabled={select?.[key]?.value}>
+            <mesh geometry={nodes[key].geometry}>
+              <meshStandardMaterial  color="red" />
+            </mesh>
+          </Select>
+        ))}
+    </group>
   );
 };
 export default Model;

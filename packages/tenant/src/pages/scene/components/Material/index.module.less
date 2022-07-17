@@ -7,34 +7,31 @@
     overflow: auto;
 
 }
-
 .ScrollWrap {
     overflow: hidden;
 }
+ .MaterialItem {
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 80px;
+        width: 70px;
+        border: 1px solid transparent;
 
-.MaterialItem {
-    padding: 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 80px;
-    width: 70px;
-    border: 1px solid transparent;
+        >img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+        }
 
-    >img {
-        width: 70%;
-        height: 70%;
-        object-fit: contain;
+        >span {
+            display: inline-block;
+            font-size: 14px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color:#ddd
+        }
     }
-
-    >span {
-        display: inline-block;
-        font-size: 14px;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        color: #ddd
-    }
-}
-

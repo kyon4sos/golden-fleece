@@ -1,24 +1,12 @@
 
-import React, { CSSProperties, PropsWithChildren, ReactNode, ReactPropTypes, useEffect, useRef, useState } from 'react'
+import { CSSProperties, useEffect, useRef, useState } from 'react'
+import { FixedSizeList as List } from 'react-window'
 import classNames from 'classnames/bind';
-import { Color } from 'three';
-import { Button, Form, Slider, Switch } from 'antd';
-import Pane from '../Pane';
-import ColorPicker from '../ColorPicker';
-import { mockMaterial } from '@/mock'
-
-import style from './index.module.less';
+import InfiniteLoader from "react-window-infinite-loader";
+import Pane from '../Pane'
+import style from './index.module.less'
 
 let cx = classNames.bind(style);
-
-type ComponetsMap = typeof componetsMap
-
-const componetsMap = {
-  Button, Slider, Switch, ColorPicker
-}
-
-console.log(componetsMap);
-
 
 type MaterialItemProps = {
   material?: material;
@@ -31,6 +19,24 @@ type material = {
   url: string;
 }
 
+const mock = (startIndex, stopIndex) => {
+  let list = new Array(stopIndex).fill({})
+    .map((mat, idx) => ({
+      name: idx.toString(),
+      url: "https://shoe-1303249748.cos.ap-shanghai.myqcloud.com/shoe/works/0.59613756369011581655879927.555.png",
+      id: startIndex + idx
+    }))
+  console.log(list);
+  return list
+}
+
+const renderItem = ({ data, index, isScrolling }) => {
+  console.log({
+    data, index,
+    isScrolling
+  });
+  return <MaterialItem material={data[index]}/>
+}
 const MaterialItem = (props: MaterialItemProps) => {
   const { material, style } = props
   return (
@@ -41,111 +47,37 @@ const MaterialItem = (props: MaterialItemProps) => {
   );
 }
 
-type config = {
-  component:keyof ComponetsMap;
-  props?: any;
-  label?:string
-}
 
+const LOADING = 1;
+const LOADED = 2;
+let itemStatusMap = {};
 
-const CreateMaterial = ({ onChange, config }: { onChange: (e) => void, config: config[] }) => {
+const isItemLoaded = index => !!itemStatusMap[index];
 
-  const [form] = Form.useForm();
+const loadMoreItems = (startIndex, stopIndex) => {
+  return new Promise(resolve =>
+    setTimeout(() => {
+      resolve(mock(startIndex, stopIndex));
+    }, 2500)
+  );
+};
 
-  return (
-    <div>
-      <h1>CreateMaterial</h1>
-      <Form form={form}>
-        {
-          config.map((conf,idx )=>
-            <Form.Item label={conf.label} key={idx}>
-              {React.createElement(componetsMap[conf.component as string], conf.props)}
-            </Form.Item>
-          )
-        }
-      </Form>
-
-    </div>);
-}
-
-const MaterialList = ({ onChange }) => {
-
-  const [scrollOffset, setScrollOffset] = useState(0);
-  const [color, setColor] = useState("");
+const MaterialList = () => {
   const outerListRef = useRef(undefined);
   const innerListRef = useRef(undefined);
+  const [scrollOffset, setScrollOffset] = useState(0);
+
   const [materials, setMaterials] = useState<material[]>([]);
-  const [create, setCreate] = useState(false);
+
   useEffect(() => {
-    setMaterials(mockMaterial(0, 10));
+    setMaterials(mock(0, 10));
   }, []);
 
-  const onChangeColor = (colorString) => {
-    // console.log(color);
-    // if (!currentMesh.current) {
-    //   return;
-    // }
-    // currentMesh.current.material.color = new Color(color)
-    const color = new Color(colorString)
-    onChange({ material: { color: color } });
-  }
-
-  const onClickCreate = () => {
-    setCreate(true)
-  }
-
-  const onChangeMaterial = () => { }
-
-  const config: config[] = [
-    {
-      label:"颜色",
-      component: 'ColorPicker',
-      props: {
-        children: "1112",
-        type: 'primary',
-        onClick: (e) => {
-          console.log(e);
-        }
-      }
-    },
-    {
-      label:"镜面反射",
-      component: 'Slider',
-      props: {
-        children: "1112",
-        type: 'primary',
-        onClick: (e) => {
-          console.log(e);
-        }
-      }
-    },
-      {
-      label:"漫反射",
-      component: 'Slider',
-      props: {
-        children: "1112",
-        type: 'primary',
-        onClick: (e) => {
-          console.log(e);
-        }
-      }
-    },{
-      label:"漫反射",
-      component: 'Slider',
-      props: {
-        children: "1112",
-        type: 'primary',
-        onClick: (e) => {
-          console.log(e);
-        }
-      }
-    },
-  ];
-
+  const listHeight = 150
   return (
     <Pane>
       <div className={cx({ "ScrollWrap": true })}>
-        {/* <InfiniteLoader
+        <InfiniteLoader
           isItemLoaded={isItemLoaded}
           itemCount={1000}
           loadMoreItems={loadMoreItems}
@@ -163,17 +95,15 @@ const MaterialList = ({ onChange }) => {
               {renderItem}
             </List>
           )}
-        </InfiniteLoader> */}
-        <ul className={cx({ "MaterialList": true })}>
-          {
-            materials.map(material => <MaterialItem material={material} key={material.id} />)
-          }
-        </ul>
+
+        </InfiniteLoader>
+
+        {/* <ul className={cx({"MaterialList":true})}>
+        {
+          materials.map(material => <MaterialItem material={material} key={material.id} />)
+        }
+      </ul> */}
       </div>
-      <Button type="primary" onClick={onClickCreate}>新建</Button>
-      {
-        create ? <CreateMaterial onChange={onChangeMaterial} config={config} /> : <></>
-      }
     </Pane>
   );
 }
