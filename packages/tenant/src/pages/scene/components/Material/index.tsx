@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties } from "react";
 import classNames from "classnames/bind";
 import Pane from "../Pane";
 import style from "./index.module.less";
@@ -6,7 +6,7 @@ import { Button, Form, Select, Slider } from "antd";
 import ColorPicker from "../ColorPicker";
 import { useStore } from "@/store/scene";
 import InputNumberOrSlider from "../InputNumberOrSlider";
-import { useWatch } from "antd/lib/form/Form";
+import Upload from "../Upload";
 
 const { Option } = Select;
 
@@ -89,6 +89,9 @@ const MaterialList = () => {
         </Form.Item>
         <Form.Item label="reflectivity" name="reflectivity">
           <Slider max={10} min={0} step={0.1} />
+        </Form.Item>
+        <Form.Item label="map" name="map">
+          <Upload />
         </Form.Item>
       </Form>
     </Pane>
