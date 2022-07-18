@@ -11,8 +11,8 @@ type select = {
 };
 type ModelProps = {
   path: string;
-  onLoad: onLoad;
-  select: select;
+  onLoad?: onLoad;
+  select?: select;
 };
 
 const Model = (props: ModelProps) => {
@@ -45,7 +45,7 @@ const Model = (props: ModelProps) => {
         Object.keys(nodes).map((key) => (
           <Select key={key} name={key} enabled={select?.[key]?.value}>
             <mesh geometry={nodes[key].geometry}>
-              <meshStandardMaterial  color="red" />
+              <meshStandardMaterial color="red" />
             </mesh>
           </Select>
         ))}

@@ -1,9 +1,12 @@
-import { createContext } from 'react';
+import { createContext } from "react";
 
 export const GlobalContext = createContext<{
-    lang?: string;
-    setLang?: (value: string) => void;
-    theme?: string;
-    setTheme?: (value: string) => void;
-    routes?: any[]
+  lang?: string;
+  setLang?: (value: string) => void;
+  theme?: string;
+  setTheme?: (value: string) => void;
+  routes?: any[];
+  config: {
+    size: "small";
+  };
 }>({});

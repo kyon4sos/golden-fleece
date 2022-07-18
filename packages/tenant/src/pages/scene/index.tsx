@@ -29,29 +29,14 @@ import Sparks from "./components/Sparks";
 import Particles from "./components/Particles";
 import Effects from "./components/Effects";
 import { Group, Mesh } from "three";
+import EnvPane from "./components/EnvPane";
+import { useStore } from "@/store/scene";
+import Box from "./Box";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
 
 // sunset, dawn, night, warehouse, forest, apartment, studio, city, park, lobby
-const envPresets = [
-  {
-    name: "city",
-    path: "/potsdamer_platz_1k.hdr",
-  },
-  {
-    name: "sunset",
-    path: "/venice_sunset_1k.hdr",
-  },
-  {
-    name: "studio",
-    path: "/studio_small_03_1k.hdr",
-  },
-  {
-    name: "night",
-    path: "/dikhololo_night_1k.hdr",
-  },
-];
 
 type TreeData = {
   name: string;
@@ -59,68 +44,12 @@ type TreeData = {
   uuid: string;
 };
 
-function Ellipse(props) {
-  const geometry = useMemo(() => {
-    const curve = new THREE.EllipseCurve(0, 0, 10, 3, 0, 2 * Math.PI, false, 0);
-    const points = curve.getPoints(50);
-    return new THREE.BufferGeometry().setFromPoints(points);
-  }, []);
-  return (
-    <line geometry={geometry} {...props}>
-      <meshBasicMaterial />
-    </line>
-  );
-}
-function ReactAtom(props) {
-  return (
-    <group {...props}>
-      <Ellipse />
-      <Ellipse rotation={[0, 0, Math.PI / 3]} />
-      <Ellipse rotation={[0, 0, -Math.PI / 3]} />
-      <mesh>
-        <sphereGeometry args={[0.5, 32, 32]} />
-        <meshBasicMaterial color="red" />
-      </mesh>
-    </group>
-  );
-}
-function Number({ hover }) {
-  const ref = useRef();
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.position.x = THREE.MathUtils.lerp(ref.current.position.x, state.mouse.x * 2, 0.1);
-      ref.current.rotation.x = THREE.MathUtils.lerp(ref.current.rotation.x, state.mouse.y / 2, 0.1);
-      ref.current.rotation.y = 0.8;
-    }
-  });
-  return (
-    <Suspense fallback={null}>
-      <group ref={ref}>
-        <Text
-          size={10}
-          onClick={(e) =>
-            window.open("https://github.com/react-spring/react-three-fiber/blob/master/whatsnew.md", "_blank")
-          }
-          onPointerOver={() => hover(true)}
-          onPointerOut={() => hover(false)}
-        >
-          4
-        </Text>
-        <ReactAtom position={[35, -20, 0]} scale={[1, 0.5, 1]} />
-      </group>
-    </Suspense>
-  );
-}
 const Scene = () => {
-  const [hovered, hover] = useState(false);
-  const mouse = useRef([0, 0]);
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const [modelPath, setModelPath] = useState("");
   const [treeData, setTreeData] = useState<DataNode[]>([]);
-  // const [hovered, hover] = useState(null)
-  const [env, setEnv] = useState("/potsdamer_platz_1k.hdr");
-
+  const [env, setEnv] = useState("/studio_small_03_1k.hdr");
   const { width, height } = useWindowSize();
+  const ambientLight = useStore((state) => state.ambientLight);
   const [selectConfig, setSelectConfig] = useState({
     shoe: { value: false },
     shoe_1: { value: false },
@@ -265,18 +194,20 @@ const Scene = () => {
               luminanceSmoothing={0.025} // smoothness of the luminance threshold. Range is [0, 1]
             /> */}
           </EffectComposer>
+          <Box />
           <Selection>
-            <Stage contactShadow shadows adjustCamera intensity={1} environment="studio" preset="soft">
+            {/* <Stage contactShadow shadows adjustCamera intensity={1} environment="studio" preset="soft">
               {modelPath.length > 0 ? <Model path={modelPath} onLoad={onLoadModel} select={selectConfig} /> : <></>}
-            </Stage>
-
+            </Stage> */}
+            {modelPath.length > 0 ? <Model path={modelPath} onLoad={onLoadModel} /> : <></>}
             {/* <Bounds fit clip margin={1.2} damping={0}>
               {
                 modelPath.length > 0 ? <Model path={modelPath} onLoad={ onLoadModel } /> : <></>
               }
             </Bounds> */}
           </Selection>
-          {/* <Environment files={env} /> */}
+          <ambientLight intensity={ambientLight.intensity} />
+          <Environment files={env} />
           <ContactShadows position={[0, -0.8, 0]} opacity={0.25} scale={10} blur={1.5} far={0.8} />
         </Suspense>
         <GizmoHelper alignment="bottom-left" margin={[width / 2, 80]} renderPriority={2}>
@@ -288,14 +219,7 @@ const Scene = () => {
         <div className={style.property}>
           <Tabs defaultActiveKey="1" onChange={onChangeTab} type="card" tabPosition="left">
             <TabPane tab="环境" key="1">
-              环境光：
-              <Select defaultValue="city" style={{ width: 120 }} onChange={onChangeEnv}>
-                {envPresets.map((env, idx) => (
-                  <Option key={idx} value={env.path}>
-                    {env.name}
-                  </Option>
-                ))}
-              </Select>
+              <EnvPane />
             </TabPane>
             <TabPane tab="材质" key="2">
               <MaterialList />
