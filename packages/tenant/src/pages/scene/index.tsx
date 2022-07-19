@@ -45,7 +45,7 @@ type TreeData = {
 };
 
 const Scene = () => {
-  const [modelPath, setModelPath] = useState("");
+  const [modelPath, setModelPath] = useState("https://abc-apitest.oss-cn-shanghai.aliyuncs.com/fennec_fox/scene.gltf");
   const [treeData, setTreeData] = useState<DataNode[]>([]);
   const [env, setEnv] = useState("/studio_small_03_1k.hdr");
   const { width, height } = useWindowSize();

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Fennec Fox
+* source:	https://sketchfab.com/3d-models/fennec-fox-c2b49407c2864402af1f27a338efcf49
+* author:	That_Noodle_Guy (https://sketchfab.com/Elfredy)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Fennec Fox" (https://sketchfab.com/3d-models/fennec-fox-c2b49407c2864402af1f27a338efcf49) by That_Noodle_Guy (https://sketchfab.com/Elfredy) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

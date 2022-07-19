@@ -26,7 +26,15 @@ function Box() {
   };
   return (
     <mesh ref={ref}>
-      <sphereGeometry />
+      {/* <sphereGeometry /> */}
+      {/* <coneGeometry /> */}
+      {/* <capsuleGeometry /> */}
+      {/* <circleGeometry />
+      <edgesGeometry /> */}
+      {/* <torusGeometry /> */}
+      {/* <torusKnotGeometry /> */}
+      {/* <latheBufferGeometry /> */}
+
       {/* <meshStandardMaterial color={newMaterial?.color} /> */}
       {/* {React.createElement(type, { ...restProps })} */}
       {/* <meshPhysicalMaterial
