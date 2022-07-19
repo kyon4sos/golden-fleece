@@ -15,6 +15,10 @@
   width: 100%;
 
   :global {
+    .ant-tree-treenode-selected {
+      background-color: red;
+    }
+
     .ant-tabs {
       width: 100%;
     }
@@ -42,4 +46,29 @@
 
 .treeWrap {
   padding: 8px;
+
+  :global {
+    .ant-tree .ant-tree-node-content-wrapper:hover {
+      background-color: transparent;
+    }
+
+    .ant-tree .ant-tree-treenode:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .ant-tree .ant-tree-treenode-selected {
+      background-color: var(--primaryColor) !important;
+
+    }
+
+    .ant-tree-show-line .ant-tree-switcher {
+      background: transparent;
+    }
+
+    .ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
+      background-color: transparent;
+    }
+  }
 }
+
+// rgba(255, 255, 255, 0.08);

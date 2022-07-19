@@ -1,5 +1,6 @@
 import { useStore } from "@/store/scene";
 import { Form, Select } from "antd";
+import { Material } from "three";
 import InputNumberOrSlider from "../InputNumberOrSlider";
 const { Option } = Select;
 
@@ -21,15 +22,38 @@ const envPresets = [
     path: "/dikhololo_night_1k.hdr",
   },
 ];
-const EnvPane = (onChange) => {
-  const increaseAmbientLight = useStore((state) => state.increaseAmbientLight);
-  const onChangeEnv = () => {
-    onChange({});
-  };
-  const onchangeIntensity = () => {};
+
+type MaterialItemProps = {
+  material: Material;
+  onClick: (material: Material) => void
+}
+const MaterialItem = ({ material, onClick }: MaterialItemProps) => {
+  return (
+    <div onClick={() => onClick(material)}>
+      <span>
+        {material?.name}
+      </span>
+      <img src="" alt="" />
+      {
+
+      }
+    </div>
+  );
+}
+const EnvPane = () => {
+  const materials = useStore((state) => state.materials);
+  const setCurrentMaterial = useStore((state) => state.setCurrentMaterial);
+  const onClick = (material) => {
+    console.log(material);
+    setCurrentMaterial(material)
+   }
   return (
     <>
-      <Form>
+      {
+        Object.values(materials).map((material: Material) => <MaterialItem key={material.uuid} material={material} onClick={onClick} />
+        )
+      }
+      {/* <Form>
         <Form.Item label="环境光">
           <Select defaultValue="city" style={{ width: 120 }} onChange={onChangeEnv} size="small">
             {envPresets.map((env, idx) => (
@@ -45,7 +69,7 @@ const EnvPane = (onChange) => {
         <Form.Item label="角度">
           <InputNumberOrSlider type="number" />
         </Form.Item>
-      </Form>
+      </Form> */}
     </>
   );
 };

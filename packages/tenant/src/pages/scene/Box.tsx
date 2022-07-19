@@ -26,7 +26,7 @@ function Box() {
   };
   return (
     <mesh ref={ref}>
-      <cylinderGeometry />
+      {/* <cylinderGeometry /> */}
       {/* <meshStandardMaterial color={newMaterial?.color} /> */}
       {/* {React.createElement(type, { ...restProps })} */}
       {/* <meshPhysicalMaterial

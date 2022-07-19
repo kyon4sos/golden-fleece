@@ -1,27 +1,25 @@
-import { useCubeTexture, useGLTF } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import { Suspense, useEffect, useRef } from "react";
-import { Select } from "@react-three/postprocessing";
-import { Group, Material, MeshStandardMaterial } from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { useFrame, useLoader } from "@react-three/fiber";
+import { Group } from "three";
+import { useFrame } from "@react-three/fiber";
 
 type onLoad = (gltf: any) => void;
 type select = {
   [index: string]: { value: boolean };
 };
 type ModelProps = {
+  id: string;
   path: string;
   onLoad?: onLoad;
   select?: select;
 };
 
 const Model = (props: ModelProps) => {
-  const { path, onLoad, select, ...restProps } = props;
+  const { id, path, onLoad, select, ...restProps } = props;
   const group = useRef<Group>(null);
-  let gltf = useGLTF(path) as any;
-  console.log(gltf);
+  let object = useGLTF(path) as any;
+  console.log(object);
 
-  // const envMap = useCubeTexture(["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"], { path: "cube/" });
   useFrame(({ clock }) => {
     if (!group.current) {
       return;
@@ -33,13 +31,13 @@ const Model = (props: ModelProps) => {
     // group.current.rotateY(1 / (2 * 60));
   });
   // console.log(gltf)
-  // useEffect(() => {
-  //   gltf = useGLTF(path) as any;
-  //   if (onLoad) {
-  //     onLoad(gltf);
-  //   }
-  // }, [path]);
-
+  useEffect(() => {
+    object = useGLTF(path) as any;
+    console.log(object);
+    if (onLoad) {
+      onLoad({ id, object,path });
+    }
+  }, [path]);
   // const { nodes } = gltf;
   return (
     // <group ref={group} {...restProps} dispose={null}>
@@ -53,7 +51,7 @@ const Model = (props: ModelProps) => {
     //     ))}
     // </group>
     <Suspense>
-      <primitive object={gltf.scene} />
+      <primitive object={object.scene} />
     </Suspense>
   );
 };

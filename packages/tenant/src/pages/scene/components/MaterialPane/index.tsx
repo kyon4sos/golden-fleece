@@ -6,25 +6,24 @@ import ColorPicker from '../ColorPicker';
 import DragContainer from '../DragContainer'
 import Upload from '../Upload'
 import InputNumberOrSlider from '../InputNumberOrSlider';
+import { useEffect } from 'react';
+
 const MaterialPane = (props) => {
   const { x, y } = props
-
   const newMaterial = useStore((state) => state.newMaterial);
-  const changeMaterial = useStore((state) => state.changeMaterial);
+  const currentMaterial = useStore((state) => state.currentMaterial);
+
+  useEffect(() => {
+    console.log(currentMaterial);
+
+  },[currentMaterial])
+  const changeCurrentMaterial = useStore((state) => state.changeCurrentMaterial);
   const onValuesChange = (val) => {
-    console.log(val);
-    console.log(newMaterial);
-    changeMaterial(val);
+    console.log('onValuesChange',val);
+    console.log('newMaterial', newMaterial);
+    // currentMaterial = val
+    changeCurrentMaterial(val);
   };
-  const loading = false;
-  const imageUrl = "";
-  const onChange = () => { }
-  const uploadButton = (
-    <div>
-      {loading ? "+" : "-"}
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </div>
-  );
 
   return (
     <div>
