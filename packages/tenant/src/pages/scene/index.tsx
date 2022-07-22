@@ -51,7 +51,9 @@ const Scene = () => {
     x: 0,
     y: 0,
   })
-  const setMaterials = useStore(state => state.setMaterials)
+  const setMaterials = useStore(state => state.setMaterials);
+  const objects = useStore(state => state.objects);
+  const addObject = useStore(state=>state.addObject)
   const [env, setEnv] = useState("/studio_small_03_1k.hdr");
   const { width, height } = useWindowSize();
   const ambientLight = useStore((state) => state.ambientLight);
@@ -96,14 +98,14 @@ const Scene = () => {
     // console.log(object);
     const id = nanoid();
     console.log(id);
-    
-    setScene(pre => ({
-      ...pre,
-      id: {
-        path,
-        id
-      }
-    }))
+    addObject({id,path})
+    // setScene(pre => ({
+    //   ...pre,
+    //   [id]: {
+    //     path,
+    //     id
+    //   }
+    // }))
   };
   const onChangeTab = () => { };
 
@@ -118,9 +120,10 @@ const Scene = () => {
     //   return
     // }
     const { id, object, path } = model
-    sceneMap.set(id, {
-      id, object, path
-    })
+    // sceneMap.set(id, {
+    //   id, object, path
+    // })
+    // addObject({dd,obejct,path})
     // setScene(pre => ({
     //   ...pre
     // }))
@@ -251,7 +254,7 @@ const Scene = () => {
             </Stage> */}
               {/* {modelPath.length > 0 ? <Model path={modelPath} onLoad={onLoadModel} /> : <></>} */}
               {
-                scene && Object.values(scene).map((item) => <Model key={item.id} path={item.path} id={item.id} onLoad={onLoadModel} />)
+                scene && Object.values(objects).map((item) => <Model key={item.id} path={item.path} id={item.id} onLoad={onLoadModel} />)
               }
               {/* <Bounds fit clip margin={1.2} damping={0}>
               {

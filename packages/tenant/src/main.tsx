@@ -19,6 +19,8 @@ import './index.css'
 //     // todo: 错误信息收集
 //   }
 // });
+console.log(import.meta.env)
+
 const container = document.getElementById("root")
 createRoot(container!).render(
   <BrowserRouter>

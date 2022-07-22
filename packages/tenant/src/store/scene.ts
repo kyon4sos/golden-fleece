@@ -1,7 +1,8 @@
 import { Material } from "three";
 import create from "zustand";
-
+import { mountStoreDevtool } from 'simple-zustand-devtools';
 type SceneStore = {
+  objects:{},
   ambientLight: {
     intensity: number;
   };
@@ -17,10 +18,12 @@ type SceneStore = {
   increaseAmbientLight?: (val: number) => void;
   changeColor?: (val) => void;
   changeMaterial: (val: number) => void;
-  changeCurrentMaterial:(val)=>void
+  changeCurrentMaterial: (val) => void;
+  addObject: (val) => void;
 };
 
 const useStore = create<SceneStore>((set) => ({
+  objects:new Map(),
   ambientLight: {
     intensity: 0,
   },
@@ -29,6 +32,19 @@ const useStore = create<SceneStore>((set) => ({
     set(() => ({
       materials: { ...val },
     }));
+  },
+  addObject: (obj3d) => {
+    set((state) => {
+      const { id, path,object } = obj3d;
+      return {
+        objects: {
+          ...state.objects,
+          [id]: {
+            id, path, object
+          }
+        }
+     }
+})
   },
   newMaterial: {
     type: "meshPhysicalMaterial",
@@ -66,5 +82,10 @@ const useStore = create<SceneStore>((set) => ({
   },
   //   removeAllBears: () => set({ bears: 0 }),
 }));
+
+
+if (import.meta.env.MODE === 'development') {
+  mountStoreDevtool('Store', useStore);
+}
 
 export { useStore };
