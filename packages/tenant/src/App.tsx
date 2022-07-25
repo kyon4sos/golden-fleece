@@ -7,6 +7,7 @@ import routes from "./routes";
 import { GlobalContext } from "./utils/context";
 // import '@icon-park/react/styles/index.css';
 import "./App.less";
+import Home from "./pages/custom/home";
 // type RouteItem = Omit<RouteObject, 'element' | 'children'> & {
 //   element: string
 //   children?: RouteItem[]
@@ -75,6 +76,7 @@ function App() {
          <Routes>
           <Route path="/" element={<BlankLayout />}>
             <Route path="scene" element={<Scene />} />
+            <Route path="store" element={<Home />} />
           </Route>
         {/* {
           flattenRoutes.map((route, idx) => {

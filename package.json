@@ -5,6 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
+    "site:dev": "pnpm --filter @golden-fleece/site run dev",
     "tenant:dev": "pnpm --filter tenant run dev",
     "tenant:build": "pnpm --filter tenant run build"
   },
@@ -12,7 +13,7 @@
   "author": "neko",
   "license": "ISC",
   "workspaces": [
-    "packages/*"
+    "packages/**"
   ],
   "devDependencies": {
     "@types/node": "^18.0.0",
