@@ -4,8 +4,12 @@
 //     imgUrl: string;
 // }
 
-// export { }
+import { Product } from "./types/prodcut";
 
+// export { }
+export type {
+    Product
+}
 
 export function test() {
     console.log('test');

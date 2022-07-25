@@ -1,3 +1,5 @@
-declare module Types {
-    interface Prodcut {}
+declare interface Product {
+    title: string;
+    enterprise: string;
+    imgUrl: string;
 }

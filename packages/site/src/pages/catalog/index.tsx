@@ -1,12 +1,12 @@
 import ProductCard from "@/components/Card/ProductCard";
 import { useState } from "react"
 
-import { test } from '@golden-fleece/common';
+import { test,Product } from '@golden-fleece/common';
 
 test()
 type ProductListProps = {
     // list: Product[]
-    list:any[]
+    list:Product[]
 }
 
 const ProductCatalog = () => {
@@ -19,7 +19,7 @@ const ProductList = ({ list }: ProductListProps) => {
     return (<>
         {
             list.map(product => {
-                <ProductCard product={product} />
+                <ProductCard product={product} name={product.name} />
             })
         }
     </>);
